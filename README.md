@@ -1,6 +1,6 @@
 ```sh
 git clone --depth 1 https://github.com/va9iff/react-tast.git
-cd react-tast
+cd 	react-tast
 npm install
 npm run dev
 ```

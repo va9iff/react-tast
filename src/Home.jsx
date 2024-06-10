@@ -81,7 +81,7 @@ const Home = ({ onLogin }) => {
             <li>Servis kimi mock apilər istifadə edilə bilər</li>
           </ol>
 
-          ---
+          <hr />
 
           Fərqli səhifələrdə fərqli filterlər olacaq, misal üçün universitetlərdə universitetin yaranma ili, regiona görə axtarış  olacaq. Yəni hər səhifənin filter filedləri fərqli olmalıdır.
           Burada lisey, universitet və məktəb var. Elə filedlər olmalıdır ki, hərəsinin öz individual filteri olsun.
@@ -100,6 +100,8 @@ const Home = ({ onLogin }) => {
 									opts={{
 										name: true,
 										min_student_count: true,
+                    region: true
+                    
 									}}
 								/>
 							</div>
@@ -112,7 +114,8 @@ const Home = ({ onLogin }) => {
                   opts={{
                     name: true,
                     min_student_count: true,
-                    established_date: true 
+                    established_date: true ,
+                    region: true
                   }}
                 />
             </div>
@@ -124,6 +127,8 @@ const Home = ({ onLogin }) => {
                 loading={loading}
                 opts={{
                   name: true,
+                  region: true
+
                   // min_student_count: true,
                 }}
               />

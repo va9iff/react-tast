@@ -3,13 +3,18 @@ import React, { useState } from 'react'
 import './Filter.css'
 import 'react-datepicker/dist/react-datepicker.css'
 import DatePicker from 'react-datepicker'
+import Modal from "./Modal";
 
 const Filter = ({ data, opts, loading }) => {
 	const [nameFilter, setNameFilter] = useState('')
 	const [minStudentCountFilter, setMinStudentCountFilter] = useState(0)
+  const [regionFilter, setRegionFilter] = useState("")
 	const [establishedDateFilter, setEstablishedDateFilter] = useState(
 		new Date(1990, 0, 1)
 	)
+
+  const [modal, setModal] = useState(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
 	// that's my filter function. I know it had to make a request and wait for
 	// backend to filter it, but for demonstrative purposes, I'm filtering
@@ -25,24 +30,62 @@ const Filter = ({ data, opts, loading }) => {
 			entry.name.toLowerCase().includes(nameFilter.toLowerCase())) &&
 		(!opts.min_student_count ||
 			entry.student_count > minStudentCountFilter) &&
+    (!opts.min_student_count ||
+      entry.student_count > minStudentCountFilter) &&
 		(!opts.established_date ||
-			new Date(entry.established_year, 0, 1) > establishedDateFilter)
+			new Date(entry.established_year, 0, 1) > establishedDateFilter) &&
+    (!opts.region || !regionFilter ||
+      entry.region == regionFilter)
+
 
 	return (
 		<div className="col">
 			<div className="row wrap fields">
-				{opts.name && (
+				{opts.region && (
 					<div className="centered row field">
 						<span>Ad</span>
-						<input
-							type="text"
-							value={nameFilter}
-							onInput={(e) => {
-								setNameFilter(e.target.value)
-							}}
-						/>
+            <select value={regionFilter} onChange={e=>setRegionFilter(e.target.value)}>
+              <option value="">hamısı</option>
+              <option value="Abşeron">Abşeron</option>
+              <option value="Lənkəran">Lənkəran</option>
+              <option value="Gəncə">Gəncə</option>
+              <option value="Sumqayıt">Sumqayıt</option>
+              <option value="Şəki">Şəki</option>
+              <option value="Şəmkir">Şəmkir</option>
+              <option value="Mingəçevir">Mingəçevir</option>
+              <option value="Şirvan">Şirvan</option>
+              <option value="Bərdə">Bərdə</option>
+              <option value="Naxçıvan">Naxçıvan</option>
+              <option value="Qəbələ">Qəbələ</option>
+              <option value="Quba">Quba</option>
+              <option value="Qusar">Qusar</option>
+              <option value="Liman">Liman</option>
+              <option value="Biləsuvar">Biləsuvar</option>
+              <option value="Tovuz">Tovuz</option>
+              <option value="Astara">Astara</option>
+              <option value="Şamaxı">Şamaxı</option>
+              <option value="Sabirabad">Sabirabad</option>
+              <option value="Zaqatala">Zaqatala</option>
+              <option value="Abşeron">Abşeron</option>
+              <option value="Sumqayıt">Sumqayıt</option>
+              <option value="Şəki">Şəki</option>
+              <option value="Gəncə">Gəncə</option>
+              <option value="Abşeron">Abşeron</option>
+            </select>
 					</div>
 				)}
+        {opts.name && (
+          <div className="centered row field">
+            <span>Ad</span>
+            <input
+              type="text"
+              value={nameFilter}
+              onInput={(e) => {
+                setNameFilter(e.target.value)
+              }}
+            />
+          </div>
+        )}
 				{opts.min_student_count && (
 					<div className="centered row field">
 						<span>Minimum Şagird sayı</span>
@@ -55,47 +98,66 @@ const Filter = ({ data, opts, loading }) => {
 						/>
 					</div>
 				)}
-        {opts.established_date && (
-          <div className="centered row field">
-            <span>Ən gec təsis olunma tarixi</span>
-            <DatePicker
-              selected={establishedDateFilter}
-              onChange={(date) => setEstablishedDateFilter(date)}
-            />
-          </div>
-        )}
+				{opts.established_date && (
+					<div className="centered row field">
+						<span>Ən gec təsis olunma tarixi</span>
+						<DatePicker
+							selected={establishedDateFilter}
+							onChange={(date) => setEstablishedDateFilter(date)}
+						/>
+					</div>
+				)}
 				<div className="centered row field">
 					<button
 						onClick={() => {
 							setMinStudentCountFilter(0)
 							setNameFilter('')
 							setEstablishedDateFilter(new Date(1990, 0, 1))
+              setRegionFilter("")
 						}}
 					>
 						Təmizlə
 					</button>
 				</div>
 			</div>
-			<div className="result box">
-				{loading
-					? 'loading...'
-					: data.filter(filterFunction).map((entry) => (
-							<div className="item row" key={entry.key}>
-								{entry.name}
-								{opts.student_count
-									? ` (~${entry.student_count})`
-									: ''}
-								{opts.established_year
-									? ` (01/01/${entry.established_year})`
-									: ''}
-								<div className="empty grow"></div>
-								{entry.region}/{entry.city}
-								<button className="listItemModalButton">
-									bax
-								</button>
-							</div>
-					  ))}
-			</div>
+
+			{loading ? (
+				'loading...'
+			) : (
+				<table className="result">
+					<tbody>
+						{data.filter(filterFunction).map((entry) => (
+							<tr className="item" key={entry.key}>
+								<td>{entry.name}</td>
+								{opts.min_student_count ? (
+									<td>~{entry.student_count}</td>
+								) : (
+									''
+								)}
+								{opts.established_date ? (
+									<td>{`01/01/${entry.established_year}`}</td>
+								) : (
+									''
+								)}
+								<td>
+									{entry.region}/{entry.city}
+								</td>
+								<td>
+									<div className="row wrap" style={{ gap: "14px"}}>
+										<button className="listItemModalButton" onClick={()=>setModal(entry)}>
+											bax
+										</button>
+										<button>sil</button>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			)}
+      <Modal show={modal} handleClose={()=>setModal(null)}>
+      </Modal>
+
 		</div>
 	)
 }

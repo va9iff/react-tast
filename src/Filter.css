@@ -1,6 +1,5 @@
 .result .item {
 	transition: 200ms;
-	padding: 14px;
 	border-radius: 13px;
 	border: 1px solid #fff4;
 	background-color: #262626;
@@ -8,17 +7,31 @@
 	animation: listItemAnim 280ms;
 }
 
+.result .item tr {
+}
+
+table {
+	border-collapse: collapse;
+
+}
+
+.result .item td {
+	padding: 14px;
+	border: 1px solid #999;
+
+
+}
 .result .item:hover {
 	background-color: #333;
 }
 
 @keyframes listItemAnim{
 	from {
-		transform: scale(0.9);
+		transform: translateY(-9px);
 		opacity: 0.4;
 	}
 	to {
-		transform: scale(1);
+		transform: translateY(0);
 		opacity: 1;
 	}
 }
@@ -44,7 +57,7 @@
 }
 
 .fields {
-	padding: 16px;
+	padding: 30px 16px;
 	gap: 13px;
 	justify-content: center;
 	background-color: #282828;
@@ -56,4 +69,10 @@
 .result {
 	border: 1px solid #999;
 	border-top: none;
+}
+
+.listItemModalButtonK {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
