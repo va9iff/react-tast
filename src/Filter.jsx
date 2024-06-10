@@ -4,6 +4,7 @@ import './Filter.css'
 import 'react-datepicker/dist/react-datepicker.css'
 import DatePicker from 'react-datepicker'
 import Modal from "./Modal";
+import Deletor from "./Deletor";
 
 const Filter = ({ data, opts, loading }) => {
 	const [nameFilter, setNameFilter] = useState('')
@@ -14,7 +15,7 @@ const Filter = ({ data, opts, loading }) => {
 	)
 
   const [modal, setModal] = useState(null)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deletor, setDeletor] = useState(null)
 
 	// that's my filter function. I know it had to make a request and wait for
 	// backend to filter it, but for demonstrative purposes, I'm filtering
@@ -43,7 +44,7 @@ const Filter = ({ data, opts, loading }) => {
 			<div className="row wrap fields">
 				{opts.region && (
 					<div className="centered row field">
-						<span>Ad</span>
+						<span>Region</span>
             <select value={regionFilter} onChange={e=>setRegionFilter(e.target.value)}>
               <option value="">hamısı</option>
               <option value="Abşeron">Abşeron</option>
@@ -147,7 +148,7 @@ const Filter = ({ data, opts, loading }) => {
 										<button className="listItemModalButton" onClick={()=>setModal(entry)}>
 											bax
 										</button>
-										<button>sil</button>
+										<button onClick={()=>setDeletor(entry)}>sil</button>
 									</div>
 								</td>
 							</tr>
@@ -155,9 +156,8 @@ const Filter = ({ data, opts, loading }) => {
 					</tbody>
 				</table>
 			)}
-      <Modal show={modal} handleClose={()=>setModal(null)}>
-      </Modal>
-
+      <Modal show={modal} handleClose={()=>setModal(null)} />
+      <Deletor show={deletor} confirm={()=>alert(`entry ${deletor.name} has been deleted in the backend :d`)} handleClose={()=>setDeletor(null)} />
 		</div>
 	)
 }
