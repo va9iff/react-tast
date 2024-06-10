@@ -1,7 +1,9 @@
-# Task
+```sh
+git clone --depth 1 https://github.com/va9iff/react-tast.git
+npm install
+npm run dev
+```
 
-Tapşırığı göndərirəm.
-REACT,  RTK, React Router
 
 1. Səhifədə login üçün inputlar olmalıdır və sistemə daxil olduqda sol menu və əsas content açılmalıdır.
 2. Sol menuda 3 bölmə olmalıdır: Universitetlər, Məktəblər, Liseylər, sağ tərəfdə isə seçilən route uyğun kontent açılmalıdır
